@@ -1,0 +1,1673 @@
+{
+	"info": {
+		"_postman_id": "9975db4b-9f46-45dd-b06e-db8a0a0782f8",
+		"name": "QA Take-Home Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14395178",
+		"_collection_link": "https://cloudy-crescent-331267.postman.co/workspace/cloud-bucks~6a48cf15-b3f6-4357-ac20-3b0b0beb51fc/collection/14395178-9975db4b-9f46-45dd-b06e-db8a0a0782f8?action=share&source=collection_link&creator=14395178"
+	},
+	"item": [
+		{
+			"name": "1st API",
+			"item": [
+				{
+					"name": "create-employer",
+					"item": [
+						{
+							"name": "create-employer(successful)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(5000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain expected data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(status=empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(5000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(null);",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.be.null;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"null\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no status property)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(null);",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.be.null;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"null\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(name=empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.be.null;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.be.a('string');",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"null\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no name property)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.exist;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.not.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"            //   name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(salary=empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.be.null;",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"null\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no salary property)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.not.exist;",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.not.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"            //   salary: { type: \"null\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"age\": \"52\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(age=empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.be.null;",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"null\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no age property)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.not.exist;",
+											"    pm.expect(responseData.data.data.id).to.eql(25);",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.not.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"null\" },",
+											"              id: { type: \"number\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"id\": 25\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(data-id=empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.be.null;",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"null\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\", \"id\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\",\n        \"id\": \"\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no data-id property)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.data.name).to.not.be.empty;",
+											"    pm.expect(responseData.data.data.salary).to.eql(\"1230999\");",
+											"    pm.expect(responseData.data.data.age).to.eql(\"52\");",
+											"    pm.expect(responseData.data.data.id).to.not.exist;",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.not.have.property('id');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.exist;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"string\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"string\" },",
+											"              salary: { type: \"string\" },",
+											"              age: { type: \"string\" },",
+											"              id: { type: \"null\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"name\": \"{{$randomFullName}}3\",\n        \"salary\": \"1230999\",\n        \"age\": \"52\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-employer(no data-id property) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(5000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check if the response contains the expected data",
+											"pm.test(\"Response contain these data\", function() {",
+											"    pm.expect(responseData.status).to.eql(\"success\");",
+											"    pm.expect(responseData.data.status).to.be.null;",
+											"    pm.expect(responseData.data.data.name).to.be.null;",
+											"    pm.expect(responseData.data.data.salary).to.be.null;",
+											"    pm.expect(responseData.data.data.age).to.be.null;",
+											"    pm.expect(responseData.data.data.id).to.be.null;",
+											"    pm.expect(responseData.data.id).to.not.be.null;",
+											"    pm.expect(responseData.message).to.eql(\"Successfully! Record has been added.\");",
+											"})",
+											"// Check if the response has the required fields",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.have.property('status');",
+											"    pm.expect(responseData.data).to.have.property('data');",
+											"    pm.expect(responseData.data.data).to.have.property('name');",
+											"    pm.expect(responseData.data.data).to.have.property('salary');",
+											"    pm.expect(responseData.data.data).to.have.property('age');",
+											"    pm.expect(responseData.data.data).to.have.property('id');",
+											"    pm.expect(responseData.data).to.have.property(\"id\")",
+											"    pm.expect(responseData).to.have.property('message');",
+											"});",
+											"// Check if the status field is a non-empty string",
+											"pm.test(\"Status field is a non-empty string\", function () {",
+											"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+											"});",
+											"// Check if the data field is an object with required fields",
+											"pm.test(\"Data field is an object with required fields\", function () {",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data.status).to.be.null;",
+											"  pm.expect(responseData.data.data).to.exist;",
+											"  pm.expect(responseData.data.id).to.exist;",
+											"});",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"  var schema = {",
+											"    type: \"object\",",
+											"    properties: {",
+											"      status: { type: \"string\" },",
+											"      data: {",
+											"        type: \"object\",",
+											"        properties: {",
+											"          status: { type: \"null\" },",
+											"          data: {",
+											"            type: \"object\",",
+											"            properties: {",
+											"              name: { type: \"null\" },",
+											"              salary: { type: \"null\" },",
+											"              age: { type: \"null\" },",
+											"              id: { type: \"null\" }",
+											"            },",
+											"            required: [\"name\", \"salary\", \"age\"]",
+											"          },",
+											"          id: { type: \"number\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"id\"]",
+											"      },",
+											"      message: { type: \"string\" }",
+											"    },",
+											"    required: [\"status\", \"data\", \"message\"]",
+											"  };",
+											"",
+											"  var response = pm.response.json();",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"\",\n    \"data\": {\n        \"name\": \"\",\n        \"salary\": \"\",\n        \"age\": \"\",\n        \"id\": \"\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/create",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2nd API",
+			"item": [
+				{
+					"name": "get-employees",
+					"item": [
+						{
+							"name": "get-employees(successful)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(5000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check that the response has the required structure and properties.",
+											"pm.test(\"Response has the required structure\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.be.an('array').and.to.have.length.above(0);",
+											"});",
+											"",
+											"// Check that each employee object in the response has the required fields.",
+											"pm.test(\"Each employee has the required fields\", function () {",
+											"    // const responseData = pm.response.json();",
+											"    responseData.data.forEach(employee => {",
+											"        pm.expect(employee).to.have.property('id');",
+											"        pm.expect(employee).to.have.property('employee_name');",
+											"        pm.expect(employee).to.have.property('employee_salary');",
+											"        pm.expect(employee).to.have.property('employee_age');",
+											"        pm.expect(employee).to.have.property('profile_image');",
+											"    });",
+											"});",
+											"",
+											"// Check that the fields of each employee object have the correct data types.",
+											"pm.test(\"Employee fields have correct data types\", function () {",
+											"    const responseData = pm.response.json();",
+											"    responseData.data.forEach(employee => {",
+											"        pm.expect(employee.id).to.be.a('number');",
+											"        pm.expect(employee.employee_name).to.be.a('string');",
+											"        pm.expect(employee.employee_salary).to.be.a('number');",
+											"        pm.expect(employee.employee_age).to.be.a('number');",
+											"        pm.expect(employee.profile_image).to.be.a('string');",
+											"    });",
+											"});",
+											"",
+											"// Ensure that each employee's name is not empty.",
+											"pm.test(\"Employee names are not empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"    responseData.data.forEach(employee => {",
+											"        pm.expect(employee.employee_name).to.not.be.empty;",
+											"    });",
+											"});",
+											"",
+											"// Check for specific employee details based on their IDs or other criteria.",
+											"pm.test(\"Check specific employee details\", function () {",
+											"    const responseData = pm.response.json();",
+											"    const employeeIdToCheck = 1; // Example ID to check",
+											"    const specificEmployee = responseData.data.find(emp => emp.id === employeeIdToCheck);",
+											"",
+											"    pm.expect(specificEmployee).to.exist;",
+											"    pm.expect(specificEmployee.employee_name).to.eql(\"Tiger Nixon\");",
+											"    pm.expect(specificEmployee.employee_salary).to.eql(320800);",
+											"    pm.expect(specificEmployee.employee_age).to.eql(61);",
+											"});",
+											"",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"    var schema = {",
+											"        type: \"object\",",
+											"        properties: {",
+											"            status: { type: \"string\" },",
+											"            data: {",
+											"                type: \"array\",",
+											"                items: {",
+											"                    type: \"object\",",
+											"                    properties: {",
+											"                        id: { type: \"number\" },",
+											"                        employee_name: { type: \"string\" },",
+											"                        employee_salary: { type: \"number\" },",
+											"                        employee_age: { type: \"number\" },",
+											"                        profile_image: { type: \"string\" }",
+											"                    },",
+											"                    required: [\"id\", \"employee_name\", \"employee_salary\", \"employee_age\", \"profile_image\"]",
+											"                }",
+											"            },",
+											"            message: { type: \"string\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"message\"]",
+											"    };",
+											"",
+											"    var responseData = pm.response.json();",
+											"    pm.expect(tv4.validate(responseData, schema)).to.be.true;",
+											"",
+											"    // var response = pm.response.json();",
+											"//   pm.expect(tv4.validate(response, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/employees",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3rd API",
+			"item": [
+				{
+					"name": "get-employees-by-id",
+					"item": [
+						{
+							"name": "get-employees-by-id(successful)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Check if the response status code is 200",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// Check if the response time is within an acceptable range",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(5000);",
+											"});",
+											"// Parse the JSON response",
+											"    const responseData = pm.response.json();",
+											"// Check that the response has the required structure and properties.",
+											"pm.test(\"Response has the required structure\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"// Check that each employee object in the response has the required fields.",
+											"pm.test(\"Employee has the required fields\", function () {",
+											"    const employee = responseData.data; ",
+											"    pm.expect(employee).to.have.property('id');",
+											"    pm.expect(employee).to.have.property('employee_name');",
+											"    pm.expect(employee).to.have.property('employee_salary');",
+											"    pm.expect(employee).to.have.property('employee_age');",
+											"    pm.expect(employee).to.have.property('profile_image');",
+											"});",
+											"",
+											"// Check that the fields of each employee object have the correct data types.",
+											"pm.test(\"Employee has the required fields\", function () {",
+											"    const employee = responseData.data; ",
+											"    pm.expect(employee).to.have.property('id');",
+											"    pm.expect(employee).to.have.property('employee_name');",
+											"    pm.expect(employee).to.have.property('employee_salary');",
+											"    pm.expect(employee).to.have.property('employee_age');",
+											"    pm.expect(employee).to.have.property('profile_image');",
+											"});",
+											"",
+											"",
+											"// Ensure that each employee's name is not empty.",
+											"pm.test(\"Employee name is not empty\", function () {",
+											"    const employee = responseData.data;",
+											"    pm.expect(employee.employee_name).to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"// Check for specific employee details based on their IDs or other criteria.",
+											"pm.test(\"Check specific employee details\", function () {",
+											"    const specificEmployee = responseData.data;",
+											"    pm.expect(specificEmployee.id).to.eql(5);",
+											"    pm.expect(specificEmployee.employee_name).to.eql(\"Airi Satou\");",
+											"    pm.expect(specificEmployee.employee_salary).to.eql(162700);",
+											"    pm.expect(specificEmployee.employee_age).to.eql(33);",
+											"    pm.expect(specificEmployee.profile_image).to.eql(\"\");",
+											"});",
+											"",
+											"// Validate the response schema",
+											"pm.test(\"Response schema is valid\", function () {",
+											"    var schema = {",
+											"        type: \"object\",",
+											"        properties: {",
+											"            status: { type: \"string\" },",
+											"            data: {",
+											"                type: \"object\",",
+											"                properties: {",
+											"                    id: { type: \"number\" },",
+											"                    employee_name: { type: \"string\" },",
+											"                    employee_salary: { type: \"number\" },",
+											"                    employee_age: { type: \"number\" },",
+											"                    profile_image: { type: \"string\" }",
+											"                },",
+											"                required: [\"id\", \"employee_name\", \"employee_salary\", \"employee_age\", \"profile_image\"]",
+											"            },",
+											"            message: { type: \"string\" }",
+											"        },",
+											"        required: [\"status\", \"data\", \"message\"]",
+											"    };",
+											"",
+											"    pm.expect(tv4.validate(responseData, schema)).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{restapiexample-base-url}}/api/v1/employee/5",
+									"host": [
+										"{{restapiexample-base-url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"employee",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
