@@ -1669,5 +1669,38 @@
 				}
 			]
 		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const waitTime = 65000; // Time in milliseconds (3000ms = 3 seconds)",
+					"",
+					"function sleep(ms) {",
+					"    return new Promise(resolve => setTimeout(resolve, ms));",
+					"}",
+					"",
+					"pm.globals.set(\"delay\", waitTime);",
+					"",
+					"(async () => {",
+					"    await sleep(pm.globals.get(\"delay\"));",
+					"})();",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
 	]
 }
